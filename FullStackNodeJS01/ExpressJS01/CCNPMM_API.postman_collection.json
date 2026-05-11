@@ -1,0 +1,257 @@
+{
+  "info": {
+    "name": "CCNPMM - BaiTap F (Express + MySQL)",
+    "_postman_id": "ccnpmm-bt3-collection",
+    "description": "Collection test API cho bài tập F: Register và ForgotPassword sử dụng Express.js + MySQL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:3001/api/v1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔍 Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": [""]
+        },
+        "description": "Kiểm tra server có đang chạy không"
+      },
+      "response": []
+    },
+    {
+      "name": "📝 Register - Thành công",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"Nguyễn Văn A\",\n  \"email\": \"nguyenvana@example.com\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/register",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "register"]
+        },
+        "description": "Đăng ký tài khoản mới - trường hợp thành công"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Register - Email đã tồn tại",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"Nguyễn Văn A\",\n  \"email\": \"nguyenvana@example.com\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/register",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "register"]
+        },
+        "description": "Đăng ký lại với email đã tồn tại → 409 Conflict"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Register - Thiếu trường bắt buộc",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"Test\",\n  \"email\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/register",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "register"]
+        },
+        "description": "Thiếu password và email rỗng → 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Register - Mật khẩu không khớp",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"654321\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/register",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "register"]
+        },
+        "description": "Mật khẩu và xác nhận không khớp → 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "📧 Forgot Password - Thành công",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"nguyenvana@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/forgot-password",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "forgot-password"]
+        },
+        "description": "Gửi yêu cầu quên mật khẩu → Email được gửi qua Mailtrap"
+      },
+      "response": []
+    },
+    {
+      "name": "📧 Forgot Password - Email không tồn tại",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"khongtontai@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/forgot-password",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "forgot-password"]
+        },
+        "description": "Email không tồn tại → Vẫn trả 200 (không tiết lộ email có tồn tại hay không)"
+      },
+      "response": []
+    },
+    {
+      "name": "🔑 Reset Password - Thành công",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"PASTE_TOKEN_FROM_EMAIL_HERE\",\n  \"newPassword\": \"newpass123\",\n  \"confirmPassword\": \"newpass123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/reset-password",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "reset-password"]
+        },
+        "description": "Đặt lại mật khẩu với token lấy từ email Mailtrap"
+      },
+      "response": []
+    },
+    {
+      "name": "❌ Reset Password - Token sai",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"invalid-token-12345\",\n  \"newPassword\": \"newpass123\",\n  \"confirmPassword\": \"newpass123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/auth/reset-password",
+          "host": ["{{BASE_URL}}"],
+          "path": ["auth", "reset-password"]
+        },
+        "description": "Token không hợp lệ → 400 Bad Request"
+      },
+      "response": []
+    }
+  ]
+}
